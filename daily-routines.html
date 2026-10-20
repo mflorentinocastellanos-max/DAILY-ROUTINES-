@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Routines | Dino Vocabulary Lab</title>
+<style>
+:root{--forest:#062f24;--deep:#031b16;--lime:#d7f36b;--cream:#f5f0df;--mint:#b8d6bb;--gold:#f2c66d;--red:#ffb4a8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#174d39 0%,#06291f 48%,#031711 100%);color:var(--cream);font-family:Arial,Helvetica,sans-serif;min-height:100vh;padding:24px 14px}
+.wrap{max-width:920px;margin:auto}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:.76rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mint)}
+.brand{font-weight:900;color:var(--lime)}
+.hero{padding:36px 0 24px;display:grid;grid-template-columns:1.3fr .7fr;gap:20px;align-items:center}
+.eyebrow{color:var(--lime);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;font-weight:800}
+h1{font-size:clamp(2.5rem,7vw,5rem);line-height:.92;letter-spacing:-.055em;margin:12px 0 16px}
+h1 span{color:var(--lime)}
+.intro{max-width:520px;color:#d7e7d6;line-height:1.65}
+.dino{border:1px solid #6a966f;background:linear-gradient(145deg,#174b37,#08251c);border-radius:26px;padding:20px;text-align:center;box-shadow:0 20px 50px #0004}
+.dino .foot{font-size:5rem;line-height:1.2}
+.dino strong{display:block;color:var(--lime);letter-spacing:.12em;font-size:.8rem}
+.dino small{display:block;color:#d7e7d6;margin-top:8px}
+.panel{background:#f5f0df;color:#173328;border-radius:24px;padding:clamp(18px,4vw,32px);box-shadow:0 24px 60px #0004}
+.panelhead{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.tag{background:#dce9c4;color:#1d482e;border-radius:999px;padding:8px 12px;font-weight:800;font-size:.78rem}
+.score{font-weight:800;color:#365746}
+.progress{height:8px;background:#d8dece;border-radius:20px;overflow:hidden;margin:12px 0 24px}
+.bar{height:100%;width:0;background:#4d7c3b;transition:width .25s}
+.prompt{font-size:clamp(1.25rem,3vw,1.8rem);font-weight:800;line-height:1.25;margin:0 0 8px}
+.sub{color:#5c7564;margin:0 0 22px;line-height:1.5}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.answer{background:#fffdf5;border:2px solid #d6dfd0;border-radius:15px;padding:16px;text-align:left;color:#173328;font-weight:700;font-size:1rem;cursor:pointer;transition:.15s;min-height:64px}
+.answer:hover:not(:disabled){border-color:#60894b;transform:translateY(-2px)}
+.answer:disabled{cursor:default}
+.answer.correct{background:#e0f0ce;border-color:#4f8b43}
+.answer.wrong{background:#ffe0d8;border-color:#c95f4c}
+.feedback{min-height:48px;margin-top:16px;font-weight:700;line-height:1.5}
+.actions{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+button.primary,button.secondary{border:0;border-radius:999px;padding:13px 20px;font-weight:800;cursor:pointer;font-size:.95rem}
+.primary{background:#123d2b;color:#f5f0df}
+.primary:hover{background:#235d3e}
+.secondary{background:#e0e5d8;color:#234531}
+.primary:disabled{opacity:.4;cursor:not-allowed}
+.result{display:none;text-align:center;padding:16px 0 6px}
+.result .big{font-size:3.5rem}
+.result h2{font-size:2rem;margin:8px 0}
+.result p{line-height:1.6;color:#506858}
+.footer{text-align:center;color:#9fbea6;font-size:.75rem;letter-spacing:.12em;margin:20px 0 4px}
+@media(max-width:650px){.hero{grid-template-columns:1fr}.dino{display:none}.answers{grid-template-columns:1fr}.topline{font-size:.68rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topline"><div class="brand">◆ Dino Vocabulary Lab</div><div>Field Mission 01 · English Practice</div></div>
+  <section class="hero">
+    <div><div class="eyebrow">Mission 01 / Daily Routines</div><h1>Crack the<br><span>Daily Code.</span></h1><p class="intro">Your expedition starts at sunrise. Test your English vocabulary, choose the right routine, and earn points before the jungle gets wild!</p></div>
+    <div class="dino"><div class="foot">🦖</div><strong>JUNGLE FIELD TEST</strong><small>9 questions · 1 mission · Your score</small></div>
+  </section>
+  <main class="panel">
+    <div id="quiz">
+      <div class="panelhead"><span class="tag" id="count">QUESTION 1 OF 9</span><span class="score">Score: <span id="score">0</span> / 9</span></div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <p class="prompt" id="question">Loading mission…</p><p class="sub" id="hint"></p>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <div class="actions"><button class="secondary" id="restart">↻ Restart mission</button><button class="primary" id="next" disabled>Next question →</button></div>
+    </div>
+    <div class="result" id="result"><div class="big" id="medal">🏆</div><h2 id="resultTitle">Mission complete!</h2><p id="resultText"></p><button class="primary" id="playAgain">Play again ↻</button></div>
+  </main>
+  <div class="footer">STAY CURIOUS · KEEP EXPLORING · KEEP LEARNING</div>
+</div>
+<script>
+const questions=[
+ {q:"You open your eyes and get out of bed. What do you do?",hint:"This is usually the first thing you do in the morning.",options:["Wake up","Go to bed","Have dinner","Do homework"],correct:"Wake up",why:"“Wake up” means to stop sleeping."},
+ {q:"Before breakfast, you use a toothbrush. You…",hint:"Think about keeping your teeth clean.",options:["Get dressed","Brush your teeth","Take a nap","Go jogging"],correct:"Brush your teeth",why:"We brush our teeth to keep them clean and healthy."},
+ {q:"You put on your clothes for the day. You…",hint:"This routine happens after choosing your outfit.",options:["Have a shower","Go to sleep","Get dressed","Set an alarm"],correct:"Get dressed",why:"“Get dressed” means to put on your clothes."},
+ {q:"You eat toast and fruit in the morning. You…",hint:"The first meal of the day.",options:["Have breakfast","Have lunch","Have dinner","Do exercise"],correct:"Have breakfast",why:"Breakfast is the meal we usually eat in the morning."},
+ {q:"Your class starts at 8:00 a.m. You leave home and travel to school. You…",hint:"A common weekday routine for students.",options:["Go to bed","Go to school","Wake up late","Watch a movie"],correct:"Go to school",why:"“Go to school” means to travel to school to study."},
+ {q:"After school, you read your notes and answer class questions. You…",hint:"You do this to prepare for a test.",options:["Do homework","Brush your hair","Have breakfast","Fall asleep"],correct:"Do homework",why:"Homework is schoolwork you complete outside class."},
+ {q:"You move your body to stay fit: run, stretch, or ride a bike. You…",hint:"This routine helps keep your body healthy.",options:["Get dressed","Exercise","Have dinner","Wake up"],correct:"Exercise",why:"Exercise is physical activity that helps keep you healthy."},
+ {q:"At the end of the day, you eat the evening meal with your family. You…",hint:"This meal is often eaten in the evening.",options:["Have lunch","Have breakfast","Have dinner","Go to school"],correct:"Have dinner",why:"Dinner is the main meal commonly eaten in the evening."},
+ {q:"It is late, you are tired, and you lie down to sleep. You…",hint:"This is usually the last routine of the day.",options:["Get up","Go to bed","Get dressed","Brush your teeth"],correct:"Go to bed",why:"“Go to bed” means to get into bed to sleep."}
+];
+let index=0,score=0,answered=false;
+const $=id=>document.getElementById(id);
+function render(){
+ answered=false;
+ const item=questions[index];
+ $("count").textContent=`QUESTION ${index+1} OF ${questions.length}`;
+ $("score").textContent=score;
+ $("bar").style.width=`${index/questions.length*100}%`;
+ $("question").textContent=item.q;
+ $("hint").textContent="FIELD NOTE: "+item.hint;
+ $("feedback").textContent="";
+ $("next").disabled=true;
+ $("next").textContent=index===questions.length-1?"View results →":"Next question →";
+ $("answers").innerHTML="";
+ [...item.options].sort(()=>Math.random()-.5).forEach(option=>{
+  const b=document.createElement("button");b.className="answer";b.textContent=option;
+  b.addEventListener("click",()=>choose(b,option,item));$("answers").appendChild(b);
+ });
+}
+function choose(button,option,item){
+ if(answered)return;answered=true;
+ const buttons=[...$("answers").querySelectorAll("button")];
+ buttons.forEach(b=>{b.disabled=true;if(b.textContent===item.correct)b.classList.add("correct")});
+ if(option===item.correct){score++;$("feedback").textContent="✓ Correct! "+item.why;$("feedback").style.color="#2c702f"}
+ else{button.classList.add("wrong");$("feedback").textContent="Not quite! "+item.why;$("feedback").style.color="#a33d2d"}
+ $("score").textContent=score;$("next").disabled=false;$("bar").style.width=`${(index+1)/questions.length*100}%`;
+}
+$("next").addEventListener("click",()=>{if(!answered)return;if(index<questions.length-1){index++;render()}else finish()});
+function finish(){
+ $("quiz").style.display="none";$("result").style.display="block";
+ const pct=Math.round(score/questions.length*100);
+ $("medal").textContent=pct>=80?"🏆":pct>=50?"🧭":"🦕";
+ $("resultTitle").textContent=pct>=80?"Excellent explorer!":pct>=50?"Good work, ranger!":"Keep training, explorer!";
+ $("resultText").textContent=`You scored ${score} out of ${questions.length} (${pct}%). ${pct>=80?"You have mastered the daily routines vocabulary.":pct>=50?"Review the routines and try the mission again.":"Practice the vocabulary and return for another expedition."}`;
+ $("bar").style.width="100%";
+}
+function restart(){index=0;score=0;$("quiz").style.display="block";$("result").style.display="none";render()}
+$("restart").addEventListener("click",restart);$("playAgain").addEventListener("click",restart);
+render();
+</script>
+</body>
+</html>
